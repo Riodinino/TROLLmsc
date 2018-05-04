@@ -2,7 +2,7 @@
 #'
 #' TROLL Master Thesis Analyses
 #'
-#' @name TROLmsc
+#' @name TROLLmsc
 #' @doctype package
 #' @import tidyverse
 NULL
