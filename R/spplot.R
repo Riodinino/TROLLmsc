@@ -9,30 +9,30 @@
 #' @export
 #'
 #' @examples
-speciesplot <- function (dataplot, speciescol = "species", sp = read.table("C:/Users/nino.page/Desktop/TROLL project/data/new_species.txt", header = T))
+speciesplot <- function (dataplot, speciescol = "species", sp = read.table("C:/Users/nino.page/Desktop/TROLL project/data/species_nino.txt", header = T))
 {
-  
+
   # Safety checks -----------------------------------------------------------
-  
+
   if("X...." %in% names(sp)){names(sp)[which(names(sp)== "X....")] <- "species"}
-  
+
   # Match plot species with troll species and create species tab ------------
-  
+
   rows <- which(dataplot[,which(names(dataplot) == speciescol)] %in% sp$species) # rows of the species column that match with species list
   splist <- as.vector(unique(dataplot[rows,which(names(dataplot) == speciescol)]))
-   
+
   spplot <- sp[sp$species %in% splist,];rm(splist)
   print(paste(nrow(spplot),"species in the plot"))
-  
-  
+
+
   # Calculate regional frequencies ------------------------------------------
-  
-  
+
+
   ### abundances of each species.
-  
+
   #should dataplot[,which(names(dataplot)==speciescol)] class be character ?
   # if(!(class(dataplot[,which(names(dataplot)==speciescol)] == "character))){dataplot[,which(names(dataplot)==speciescol)] <- as.character(dataplot[,which(names(dataplot)==speciescol)])}
-  
+
   ab <- tapply(as.vector(dataplot[,which(names(dataplot)==speciescol)]),as.vector(dataplot[,which(names(dataplot)==speciescol)]),length)#length or nrow ?
   abundances <- as.data.frame.array(ab)
   abundances$sp = rownames(ab) ; rm(ab)
@@ -40,12 +40,12 @@ speciesplot <- function (dataplot, speciescol = "species", sp = read.table("C:/U
   rownames(abundances) <- NULL
   colnames(abundances)[1] <- 'n'
 
-  
+
   ###regional frequencies
   ntot <- sum(abundances$n)
   abundances$frequencies <- abundances$n / ntot
   # abundances$frequencies <- abundances$frequencies[which(abundances$sp %in%spplot)]
-  
+
   # spplot$Freg <- abundances$frequencies[which(abundances$sp %in%spplot)] #correspondance issue
   for (i in 1:nrow(spplot))
   {
@@ -53,7 +53,7 @@ speciesplot <- function (dataplot, speciescol = "species", sp = read.table("C:/U
   }
   ### Last step : normalization to sum to 1
   f <- sum(spplot$Freg)
-  spplot$Freg <- spplot$Freg/f 
+  spplot$Freg <- spplot$Freg/f
   row.names(spplot) <- spplot[,which(names(spplot) == speciescol)]
   return(spplot)
 }

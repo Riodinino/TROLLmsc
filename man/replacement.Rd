@@ -2,7 +2,7 @@
 % Please edit documentation in R/replacement.R
 \name{replacement}
 \alias{replacement}
-\title{Title}
+\title{Fuzzy Replacement procedure}
 \usage{
 replacement(data, X, Y, dbh, ID, dmax = 5)
 }
@@ -28,5 +28,5 @@ Function returns a new inventory with modified coordinates,
 where there is one individual per cell.
 }
 \description{
-Title
+Fuzzy Replacement procedure
 }

@@ -1,7 +1,7 @@
 #' @import tidyverse
 library(tidyverse)
 
-#' Title
+#' Fuzzy Replacement procedure
 #'
 #' @param data A one-plot, one-census dataset you want to process
 #' @param X Character. The name of the column containing plot-scale \code{X} coordinates.
