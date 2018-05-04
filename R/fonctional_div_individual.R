@@ -1,1 +1,0 @@
-fonctional_div_individual <- function(data, speciescol, speciestraits)

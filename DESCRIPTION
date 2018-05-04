@@ -1,9 +1,10 @@
-Package: multiple
-Title: What the Package Does (one line, title case)
+Package: TROLLmsc
+Title: TROLL Master Thesis Analyses
 Version: 0.0.0.9000
-Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
+Authors@R: person("Nino", "PAGE", email = "page.nino@gmail.com", role = c("aut", "cre"))
+Description: This package contains complementary functions to the.
 Depends: R (>= 3.3.0)
-License: What license is it under?
+License: GNU General Public License
 Encoding: UTF-8
 LazyData: true
+RoxygenNote: 6.0.1
