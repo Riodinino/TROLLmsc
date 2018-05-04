@@ -9,22 +9,22 @@ replacement(data, X, Y, dbh, ID, dmax = 5)
 \arguments{
 \item{data}{A one-plot, one-census dataset you want to process}
 
-\item{X}{Character. The name of the column containing plot-scale X coordinates. 
+\item{X}{Character. The name of the column containing plot-scale \code{X} coordinates.
 Coordinates must be in the plot's referential, not UTM or others.}
 
-\item{Y}{Character. The name of the column containing plot-scale Y coordinates. 
+\item{Y}{Character. The name of the column containing plot-scale Y coordinates.
 Coordinates must be in the plot's referential, not UTM or others.}
 
 \item{dbh}{Character. The name of the column containing dbh measurements}
 
 \item{ID}{Character. The name of the column containing unique individual IDs}
 
-\item{dmax}{Maximum distance you wannt to move a tree from its conflicting 
-position. If tree cannot be replace within that range, the biggest dbh are kept 
+\item{dmax}{Maximum distance you wannt to move a tree from its conflicting
+position. If tree cannot be replace within that range, the biggest dbh are kept
 and the smallest, removed.}
 }
 \value{
-Function returns a new inventory with modified coordinates, 
+Function returns a new inventory with modified coordinates,
 where there is one individual per cell.
 }
 \description{
