@@ -9,7 +9,7 @@
 #' @export
 #'
 #' @examples
-speciesplot <- function (dataplot, speciescol = "species", sp = read.table("C:/Users/nino.page/Desktop/TROLL project/data/species_nino.txt", header = T))
+speciesplot <- function (dataplot, speciescol = "species", sp = read.table("C:/Users/nino.page/Desktop/TROLL project/data/species_nino_paracou.txt", header = T))
 {
 
   # Safety checks -----------------------------------------------------------

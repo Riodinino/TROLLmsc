@@ -154,15 +154,15 @@ data <- filter(data, dbh >100)
             temp <-  dplyr::sample_n(target,size = lengthclass,replace = T)
           }
         }
-        # if(nrow(temp)>1){
+        # if(nrow(temp)>1)
           sampl <- rbind(sampl, temp) #Update sample
           # temp <- temp[-c(2:nrow(temp)),]
-      }
+
  print(paste("nrow temp", nrow(temp)))
 
- }
-
     }
+
+  }
      sampl <- sampl[c(-1,-2),] #Take off the 2 first lines that are extra (gotodef)
   }
 
