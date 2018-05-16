@@ -2,18 +2,17 @@
 #'
 #' @param macros Character. MUST BE "species-specific", "intraspecific-only" or "intraspecific-covar".
 #' Describes the macros that you use for this simulation, so that the function adapts the input file to avoid crashing TROLL.
-#' @param path
-#' @param input
-#' @param climate
-#' @param overwrite
-#' @param nbcol
-#' @param nbrows
+#' @param path Character - The path leading to the directory you want to save the file in.
+#' @param input Character - The name of the file
+#' @param overwrite Logical - TRUE if you want to overwrite file existing with same name.
+#' @param nbcol - Integer, dimensions of your grid (number of cells)
+#' @param nbrows -Integer, dimensions of your grid (number of cells)
 #' @param nbiter
 #' @param iter
-#' @param NV
-#' @param NH
+#' @param NV - Integer, number of vertical cells per meter (m-1)
+#' @param NH - Integer, number of horizontal cells (m-2)
 #' @param nbout
-#' @param numesp
+#' @param numesp - Integer, number of species
 #' @param p
 #' @param klight
 #' @param phi
@@ -55,9 +54,9 @@
 #'
 #' @examples
 init_general <- function (
-                      macros = "species_specific",#New
-                      path = getOption("RconTroll.path"),
-                      input = getOption("RconTroll.init"),
+                      macros = "intra",#New
+                      path,
+                      input,
                       overwrite = TRUE,
                       nbcol = 400,
                       nbrows = 400,
@@ -101,7 +100,7 @@ init_general <- function (
                       mindeathrate = 0.035,
                       m1 = 0.035,
                       CO2 = 360,
-                      species = read.table(getOption("RconTroll.species"), header = TRUE, dec = ".", sep = ""),
+                      species
                       )
 {
 
@@ -111,14 +110,14 @@ init_general <- function (
     if (input %in% list.files(path)) # Check for species/general input
       stop("The input file already exists, use overwrite = T.")
   }
-  if(macros != "species_specific" & macros != "intraspecific_only" & macros != "intraspecific_covariance"){
+  if(macros != "intra" & macros != "inter" & macros != "covar"){
     stop(
       paste(
         "The macros you indicated is not part of the accepted propositions : ",
         "It must be one of these 3 :",
-        "- species_specific",
-        "- intraspecific_only",
-        "- intraspecific_covariance",
+        "- inter (for species-specific trait parametrization)",
+        "- intra (for intraspecific variation without covariance module)",
+        "- covar (for intraspecific variation with covariance between traits",
         "Please pick the one corresponding to your simulation options (macros)",
         sep = "\n")
       )
@@ -130,7 +129,7 @@ init_general <- function (
   fileConn <- file(file.path(path, input))
 
 # Species-specific input file ---------------------------------------------
-if(macros = "species_specific"){
+if(macros == "inter"){
   writeLines(c("#############################################\t",
                "###  Parameter file for the TROLL program ###\t",
                "#############################################\t",
@@ -144,8 +143,7 @@ if(macros = "species_specific"){
                paste(nbout, "/* nbout # Number of outputs */ ", sep = "\t"),
                paste(numesp, "/* numesp # Number of species */", sep = "\t"),
                paste(p, "/* p # light incidence param (diff through turbid medium) */", sep = "\t"),
-               "\n",
-               "###\tCharacters shared by species\t\t\t\t\t\t\t\t\t\t\t",
+               "\t\t\t\t\t\n###\tCharacters shared by species\t\t\t\t\t\t\t\t\t\t\t",
                paste(klight, "/* klight # light attenuation in the canopy Beer-Lambert */", sep = "\t"),
                paste(phi, "/* phi # quantum yield (in micromol C/micromol photon) */", sep = "\t"),
                paste(g1, "/* parameter g1 of Medlyn et al stomatal conductance model */", sep = "\t"),
@@ -171,7 +169,7 @@ if(macros = "species_specific"){
 }
 
 # Intraspecific-only file -------------------------------------------------
-else if(macro = "intraspecific_only"){
+else if(macros == "intra"){
   writeLines(c("#############################################\t",
                "###  Parameter file for the TROLL program ###\t",
                "#############################################\t",
@@ -185,8 +183,7 @@ else if(macro = "intraspecific_only"){
                paste(nbout, "/* nbout # Number of outputs */ ", sep = "\t"),
                paste(numesp, "/* numesp # Number of species */", sep = "\t"),
                paste(p, "/* p # light incidence param (diff through turbid medium) */", sep = "\t"),
-               "\n",
-               "###\tCharacters shared by species\t\t\t\t\t\t\t\t\t\t\t",
+               "\t\t\t\t\t\n###\tCharacters shared by species\t\t\t\t\t\t\t\t\t\t\t",
                paste(klight, "/* klight # light attenuation in the canopy Beer-Lambert */", sep = "\t"),
                paste(phi, "/* phi # quantum yield (in micromol C/micromol photon) */", sep = "\t"),
                paste(g1, "/* parameter g1 of Medlyn et al stomatal conductance model */", sep = "\t"),
@@ -220,7 +217,7 @@ else if(macro = "intraspecific_only"){
 }
 
 # Intraspecific covariance file -------------------------------------------
-else if (macros = "intraspecific_covariance"){
+else if (macros == "covar"){
   writeLines(c("#############################################\t",
                "###  Parameter file for the TROLL program ###\t",
                "#############################################\t",
@@ -234,8 +231,7 @@ else if (macros = "intraspecific_covariance"){
                paste(nbout, "/* nbout # Number of outputs */ ", sep = "\t"),
                paste(numesp, "/* numesp # Number of species */", sep = "\t"),
                paste(p, "/* p # light incidence param (diff through turbid medium) */", sep = "\t"),
-               "\n",
-               "###\tCharacters shared by species\t\t\t\t\t\t\t\t\t\t\t",
+               "\t\t\t\t\t\n###\tCharacters shared by species\t\t\t\t\t\t\t\t\t\t\t",
                paste(klight, "/* klight # light attenuation in the canopy Beer-Lambert */", sep = "\t"),
                paste(phi, "/* phi # quantum yield (in micromol C/micromol photon) */", sep = "\t"),
                paste(g1, "/* parameter g1 of Medlyn et al stomatal conductance model */", sep = "\t"),
@@ -270,7 +266,7 @@ else if (macros = "intraspecific_covariance"){
                paste(mindeathrate, "/* minimal death rate", sep = "\t"),
                paste(m1, "/* m1 (slope of death rate)",sep = "\t"),
                paste(CO2, "/* atmospheric CO2 concentration in micromol/mol */",sep = "\t"),
-               "\t\t\t\t\t\n###\tSpecies description\t\t\t\t\t\t\t\t\t\t\t"),fileConn)
+               "\t\n\t\t\t\t\n###\tSpecies description\t\t\t\t\t\t\t\t\t\t\t"),fileConn)
   }
 
 

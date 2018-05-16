@@ -5,7 +5,7 @@
 \title{Title}
 \usage{
 speciesplot(dataplot, speciescol = "species",
-  sp = read.table("C:/Users/nino.page/Desktop/TROLL project/data/species_nino.txt",
+  sp = read.table("C:/Users/nino.page/Desktop/TROLL project/data/species_nino_paracou.txt",
   header = T))
 }
 \arguments{

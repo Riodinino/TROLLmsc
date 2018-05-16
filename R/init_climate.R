@@ -24,10 +24,9 @@
 #' @export
 #'
 #' @examples
-init_general <- function (
+init_climate <- function (
                       path = getOption("RconTroll.path"),
-                      input = getOption("RconTroll.init"),
-                      climate = getOption("RconTroll.climate"),
+                      climate = "climate.txt",
                       overwrite = TRUE,
                       daylight = c(0.03, 0.108, 0.208, 0.304, 0.473, 0.617, 0.723,
                                    0.823, 0.925, 0.965, 0.995, 0.988, 1, 0.942, 0.854,
@@ -99,32 +98,23 @@ init_general <- function (
 
   fileConn <- file(file.path(path, climate))
 
-  writeLines(c("######################################################\t",
-               "###  Climate parameter file for the TROLL program  ###\t",
-               "######################################################\t",
+  writeLines(c("##################################################\t",
+               "###  Climate parameter file for TROLL program  ###\t",
+               "##################################################\t",
                "###	Normalized daily variation in photon flux, VPD and T",
 
-               do.call(paste, as.list(c(format(daylight, nsmall = 3),
-                                        "  /* normalized daily light course (from
-                                        7am to 7pm, with a half-hour time-step */",
-                                        sep = "\t"))),
-               do.call(paste, as.list(c(format(dayT, nsmall = 3),
-                                        "  /* normalized daily VPD course (from
-                                        7am to 7pm, with a half-hour time-step */",
-                                        sep = "\t"))),
-               do.call(paste, as.list(c(format(dayVPD, nsmall = 3),
-                                        "  /* normalized daily T course (from
-                                        7am to 7pm, with a half-hour time-step */",
-                                        sep = "\t"))),
-               "\n",
-               "###	Monthly averages for climate variables",
+               do.call(paste, as.list(c(format(daylight, nsmall = 3), "/* normalized daily light course (from 7am to 7pm, with a half-hour time-step */", sep = "\t"))),
+               do.call(paste, as.list(c(format(dayT, nsmall = 3), "/* normalized daily VPD course (from 7am to 7pm, with a half-hour time-step */", sep = "\t"))),
+               do.call(paste, as.list(c(format(dayVPD, nsmall = 3),"/* normalized daily T course (from 7am to 7pm, with a half-hour time-step */",sep = "\t"))),
+
+               "\n###	Monthly averages for climate variables",
                do.call(paste, as.list(c(Tyear, "/*Temperature in degree C*/", sep = "\t"))),
                do.call(paste, as.list(c(maxT, "/*mean daily max temperature in degree C*/", sep = "\t"))),
                do.call(paste, as.list(c(nightmeanT, "/*Night mean temperature in degree C*/", sep = "\t"))),
                do.call(paste, as.list(c(rainfall, "/*Rainfall in mm*/\t/", sep = "\t"))),
                do.call(paste, as.list(c(wind, "/* Wind speed in m.s-1 */", sep = "\t"))),
                do.call(paste, as.list(c(maxIrradiance, "/* Daily max irradiance mean in W.m-2 */", sep = "\t"))),
-               "\n",
+
                do.call(paste, as.list(c(irradiance,"/* Irradiance mean in W.m-2 */", sep = "\t"))),
                do.call(paste, as.list(c(e_s, "/* e_s in kPa */",sep = "\t"))),
                do.call(paste, as.list(c(e_a, "/* e_a in kPa */", sep = "\t"))),

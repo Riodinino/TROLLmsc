@@ -1,7 +1,5 @@
 #' @import tidyverse
-library(tidyverse)
-
-#' Fuzzy Replacement procedure
+#'
 #'
 #' @param data A one-plot, one-census dataset you want to process
 #' @param X Character. The name of the column containing plot-scale \code{X} coordinates.
@@ -23,7 +21,7 @@ library(tidyverse)
 # replacement <- function(data, X = "X", Y = "Y", dbh ="dbh", ID = "i_arbre", dmax = 3)
 replacement <- function(data, X, Y, dbh, ID, dmax = 5)
   {
-
+  library(tidyverse)
   # Variable preparation for plyr syntaxis ----------------------------------
 
   X <- enquo(X)
@@ -34,7 +32,7 @@ replacement <- function(data, X, Y, dbh, ID, dmax = 5)
   # Definition of conflicts matrix ------------------------------------------
 
   count_conflicts <- data %>%
-    select(!!X, !!Y) %>%
+    dplyr::select(!!X, !!Y) %>%
     group_by(!!X, !!Y) %>%
     summarise(n = n()) %>%
     #as.numeric %>%
@@ -83,11 +81,11 @@ replacement <- function(data, X, Y, dbh, ID, dmax = 5)
       {
         # Safety check : avoiding edge effects by declaring coordinates un --------
 
-        if(!(Scope$X[j] >  min(data %>% select(!!X)) &  Scope$X[j] < max(data %>% select(!!X))))
+        if(!(Scope$X[j] >  min(data %>% dplyr::select(!!X)) &  Scope$X[j] < max(data %>% dplyr::select(!!X))))
         {
           Scope$Available[j] <- FALSE
         }
-        else if(!(Scope$Y[j] >  min(data %>% select(!!Y)) &  Scope$Y[j] < max(data %>% select(!!Y))))
+        else if(!(Scope$Y[j] >  min(data %>% dplyr::select(!!Y)) &  Scope$Y[j] < max(data %>% dplyr::select(!!Y))))
         {
           Scope$Available[j] <- FALSE
         }
@@ -111,7 +109,7 @@ replacement <- function(data, X, Y, dbh, ID, dmax = 5)
       # print(newcoord)
       #If enough, end while-loop
 
-        newcoord <- rbind(newcoord, Scope %>% filter(Available == T) %>% select(X,Y,d))
+        newcoord <- rbind(newcoord, Scope %>% filter(Available == T) %>% dplyr::select(X,Y,d))
 
 
       # count_conflicts$n[i] <- count_conflicts$n[i] - nrow(newcoord %>% filter(!is.na(newcoord$X) & !is.na(newcoord$Y)))
@@ -133,7 +131,7 @@ replacement <- function(data, X, Y, dbh, ID, dmax = 5)
     # print(newcoord)
 
     focus <- data %>%
-      select(!!X,!!Y,!!dbh,!!ID) %>%
+      dplyr::select(!!X,!!Y,!!dbh,!!ID) %>%
       filter(!!X == count_conflicts$X[i]) %>%
       filter(!!Y == count_conflicts$Y[i]) %>%
       rename(X = !!X) %>%
@@ -143,13 +141,13 @@ replacement <- function(data, X, Y, dbh, ID, dmax = 5)
     # Error in `$<-.data.frame`(`*tmp*`, "X", value = 66.5) :
       # le tableau de remplacement a 1 lignes, le tableau remplacé en a 0
     #The one with the biggest dbh will stay there for being to heavy lol
-   ngros <- focus %>% filter(!!dbh == max(focus %>% select(!!dbh))) %>% nrow()
-    if(ngros == 1) {focus <- focus %>% filter(!!dbh != max(focus %>% select(!!dbh))) %>%
+   ngros <- focus %>% filter(!!dbh == max(focus %>% dplyr::select(!!dbh))) %>% nrow()
+    if(ngros == 1) {focus <- focus %>% filter(!!dbh != max(focus %>% dplyr::select(!!dbh))) %>%
       arrange(desc(!!dbh))}
     else
       {
-      spl <- focus %>% filter(!!dbh == max(focus %>% select(!!dbh))) %>% sample_n(size = ngros-1, replace = FALSE)
-      focus <- focus %>% filter(!!dbh != max(focus %>% select(!!dbh))) %>% rbind(spl) %>%
+      spl <- focus %>% filter(!!dbh == max(focus %>% dplyr::select(!!dbh))) %>% sample_n(size = ngros-1, replace = FALSE)
+      focus <- focus %>% filter(!!dbh != max(focus %>% dplyr::select(!!dbh))) %>% rbind(spl) %>%
       arrange(desc(!!dbh))
 
       }
@@ -233,7 +231,7 @@ replacement <- function(data, X, Y, dbh, ID, dmax = 5)
 
 # # Test
 # dat %>%
-#   select(X, Y, dbh, i_arbre) %>%
+#   dplyr::select(X, Y, dbh, i_arbre) %>%
 #   rename(Xcol = X, Ycol = Y, dbhcol = dbh) %>%
 #   replacement(Xcol, Ycol, dbhcol, i_arbre)
 
